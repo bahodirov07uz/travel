@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog Page</title>
+    <link rel="stylesheet" href="{% static 'main/main.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function() {
+            const cities = [
+                {% for city in cities %}
+                    { label: "{{ city.name }}", value: "{{ city.name }}" },
+                {% endfor %}
+            ];
+
+            $("#departure, #arrival").autocomplete({
+                source: function(request, response) {
+                    const results = $.ui.autocomplete.filter(cities, request.term);
+                    response(results.slice(0, 5)); // ограничиваем до 5 результатов
+                }
+            });
+
+            $("#price-slider").slider({
+                range: true,
+                min: 320,
+                max: 670,
+                values: [{{ selected_price_min }}, {{ selected_price_max }}],
+                slide: function(event, ui) {
+                    $("#price-min").text(ui.values[0] + " ₽");
+                    $("#price-max").text(ui.values[1] + " ₽");
+                    $("#price_min").val(ui.values[0]);
+                    $("#price_max").val(ui.values[1]);
+                }
+            });
+
+            $("#price-min").text($("#price-slider").slider("values", 0) + " ₽");
+            $("#price-max").text($("#price-slider").slider("values", 1) + " ₽");
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <h1>Название</h1>
+        </div>
+        <div class="header-right">
+            <a href="#">Добавить поездку</a>
+            <button>Вход/Регистрация</button>
+        </div>
+    </header>
+    <main>
+        <aside>
+            <form method="GET" action="{% url 'main:catalog' %}">
+                <div class="filter">
+                    <label for="departure">Город отправления</label>
+                    <input id="departure" type="text" name="departure_city" value="{{ selected_departure_city }}" placeholder="Введите город">
+
+                    <label for="arrival">Город прибытия</label>
+                    <input id="arrival" type="text" name="destination_city" value="{{ selected_destination_city }}" placeholder="Введите город">
+
+                    <label for="date">Дата поездки</label>
+                    <input type="date" id="date" name="date" value="{{ selected_date }}">
+
+                    <label for="people">Количество человек</label>
+                    <select id="people" name="passengers">
+                        <option value="1" {% if selected_passengers == '1' %}selected{% endif %}>1 человек</option>
+                        <!-- Добавьте другие опции, если нужно -->
+                    </select>
+
+                    <button type="submit" class="find-button">Найти поездку</button>
+                </div>
+                <div class="reset-filter">
+                    <a href="#">Сбросить фильтры</a>
+                </div>
+                <div class="price-filter">
+                    <label for="price-slider">Стоимость поездки</label>
+                    <div id="price-slider"></div>
+                    <input type="hidden" id="price_min" name="price_min" value="{{ selected_price_min }}">
+                    <input type="hidden" id="price_max" name="price_max" value="{{ selected_price_max }}">
+                    <div class="price-range">
+                        <span id="price-min">от 320 ₽</span>
+                        <span id="price-max">до 670 ₽</span>
+                    </div>
+                </div>
+            </form>
+        </aside>
+        <section class="results">
+            <p>Всего найдено {{ trips.count }} поездок</p>
+            <div class="sort">
+                <select>
+                    <option value="popularity">по популярности</option>
+                </select>
+            </div>
+            {% for trip in trips %}
+            <div class="offer">
+                <img src="car.jpg" alt="Car Image">
+                <div class="offer-details">
+                    <h2>{{ trip.car_model }}</h2>
+                    <p>{{ trip.available_seats }} места</p>
+                    <p class="price">{{ trip.price }} ₽</p>
+                    <p class="driver">{{ trip.driver_name }}</p>
+                    <div class="trip-details">
+                        <p>{{ trip.departure_time }} {{ trip.departure_city.name }}</p>
+                        <p>{{ trip.arrival_time }} {{ trip.destination_city.name }}</p>
+                        <p>в пути {{ trip.duration }}</p>
+                    </div>
+                    <div class="actions">
+                        <a href="#">Подробнее</a>
+                        <button>Поехать</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>

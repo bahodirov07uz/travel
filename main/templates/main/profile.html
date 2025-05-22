@@ -1,0 +1,390 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}
+  Профиль
+{% endblock title %}
+{% block css %}
+  <link rel="stylesheet" href="{% static "main/profile.css" %}">
+{% endblock css %}
+{% block content %}
+  <main class="content">
+    <div class="container">
+      <div class="content__title">Личный кабинет</div>
+      <div class="content__row">
+        <div class="content__main main">
+          <div class="main__photo">
+            <div class="main__photo-preview">
+              {% if profile.avatar %}
+                <img width="145" height="143" src="{{ profile.avatar.url }}" alt="">
+              {% else %}
+                <img width="145" height="143" src="{% static "img/def_pic_profile.png" %}" alt="">
+              {% endif %}
+              <div class="main__photo-text">
+                <p>Ваше фото</p>
+                {% if not profile.avatar %}<span>Нет фото</span>{% endif %}
+              </div>
+            </div>
+            <label class="main__photo-change">
+              <span id="photoInputLabel">Загрузить фото</span>
+              <input type="file"
+                     class="main__photo-input"
+                     id="photoInput"
+                     accept="image/*">
+            </label>
+          </div>
+          <div class="main__fields">
+            <div class="main__field field" data-name="first_name" id="field">
+              <div class="field__info">
+                <div class="field__title">Ваше имя</div>
+                <div class="field__value">{{ profile.first_name }}</div>
+                <div class="field__input">
+                  <input type="text" id="dataInput" value="{{ profile.first_name }}">
+                </div>
+              </div>
+              <div class="field__action">
+                <img src="{% static "img/icons/arrow-gray-right.svg" %}" alt="">
+              </div>
+            </div>
+            <div class="main__field field" data-name="last_name" id="field">
+              <div class="field__info">
+                <div class="field__title">Ваша фамилия</div>
+                <div class="field__value">{{ profile.last_name }}</div>
+                <div class="field__input">
+                  <input type="text" id="dataInput" value="{{ profile.last_name }}">
+                </div>
+              </div>
+              <div class="field__action">
+                <img src="{% static "img/icons/arrow-gray-right.svg" %}" alt="">
+              </div>
+            </div>
+            <div class="main__field field" data-name="birth_date" id="field">
+              <div class="field__info">
+                <div class="field__title">Дата рождения</div>
+                <div class="field__value">
+                  {% if profile.birth_date %}
+                    {{ profile.birth_date }}
+                  {% else %}
+                    Не указано
+                  {% endif %}
+                </div>
+                <div class="field__input">
+                  <input type="date"
+                         id="dataInput"
+                         value="{{ profile.birth_date|date:"Y-m-d" }}">
+                </div>
+              </div>
+              <div class="field__action">
+                <img src="{% static "img/icons/arrow-gray-right.svg" %}" alt="">
+              </div>
+            </div>
+            <div class="main__field field" data-name="gender" id="field">
+              <div class="field__info">
+                <div class="field__title">Пол</div>
+                <div class="field__value">
+                  {% if profile.gender %}
+                    {{ profile.gender }}
+                  {% else %}
+                    Не указано
+                  {% endif %}
+                </div>
+                <div class="field__input">
+                  <input type="text" id="dataInput" value="{{ profile.gender }}">
+                </div>
+              </div>
+              <div class="field__action">
+                <img src="{% static "img/icons/arrow-gray-right.svg" %}" alt="">
+              </div>
+            </div>
+            <div class="main__field field" data-name="email" id="field">
+              <div class="field__email"></div>
+              <div class="field__info">
+                <div class="field__title">Электронная почта</div>
+                {% comment %} TODO: Сделать скрытие для почты {% endcomment %}
+                <div class="field__value">{{ profile.email }}</div>
+                <div class="field__input">
+                  <input type="text" id="dataInput" value="{{ profile.email }}">
+                </div>
+              </div>
+              <div class="field__action">
+                <img src="{% static "img/icons/arrow-gray-right.svg" %}" alt="">
+              </div>
+            </div>
+            <div class="main__field field" data-name="phone_number" id="field">
+              <div class="field__info">
+                <div class="field__title">Телефон</div>
+                {% comment %} TODO: Сделать скрытие для телефона {% endcomment %}
+                <div class="field__value">{{ profile.phone_number }}</div>
+                <div class="field__input">
+                  <input type="text" id="dataInput" value="{{ profile.phone_number }}">
+                </div>
+              </div>
+              <div class="field__action">
+                <img src="{% static "img/icons/arrow-gray-right.svg" %}" alt="">
+              </div>
+            </div>
+            <div class="main__field field">
+              <div class="field__info">
+                <div class="field__title">Пароль</div>
+                <div class="field__value">******</div>
+                <div class="field__input">
+                  <input type="text">
+                </div>
+              </div>
+              <div class="field__action">
+                <img src="{% static "img/icons/arrow-gray-right.svg" %}" alt="">
+              </div>
+            </div>
+            {% comment %} <div class="main__field field">
+              <div class="field__info">
+                <div class="field__title">Аккаунт</div>
+                <div class="field__value">Управление аккаунтом</div>
+                <div class="field__input">
+                  <input type="text">
+                </div>
+              </div>
+              <div class="field__action">
+                <img src="{% static "img/icons/arrow-gray-right.svg" %}" alt="">
+              </div>
+            </div> {% endcomment %}
+          </div>
+        </div>
+        <div class="content__travels travels">
+          <div class="travels__switch">
+            <div class="travels__switch-item _active" id="switchItem">Я еду</div>
+            <div class="travels__switch-item" id="switchItem">Меня везут</div>
+          </div>
+          <div class="travels__cards" id="travelsCards">
+            {% comment %} {% for trip_info in paginated_trips %}
+              <div class="travels__card card">
+                <div class="card__column">
+                  <div class="card__block-1">
+                    <div class="card__datetimes">
+                      <p>
+                        18:50 <span>28.08.2024</span>
+                      </p>
+                      <span></span>
+                      <p>
+                        20:50 <span>28.08.2024</span>
+                      </p>
+                    </div>
+                    <div class="card__cities">
+                      <p>Санкт-Петербург</p>
+                      <p>Москва</p>
+                    </div>
+                  </div>
+                  <div class="card__block-2">
+                    <div class="card__driver">
+                      <img src="{% static "img/def_pic_profile.png" %}" alt="" class="card__driver-avatar">
+                      <div class="card__driver-info">
+                        <p>Павел Кузнецов</p>
+                        <span>BMW M5</span>
+                      </div>
+                    </div>
+                    <div class="card__price">1200</div>
+                  </div>
+                  <div class="card__block-3">Осталось 3 места</div>
+                  <div class="card__block-4">
+                    <ul class="card__rules">
+                      <li class="card__rule">
+                        <span id="tripTooltip">Тестовый текст</span>
+                        <img src="{% static "img/icons/telegram.svg" %}" alt="">
+                      </li>
+                      <li class="card__rule">
+                        <span id="tripTooltip">Тестовый текст</span>
+                        <img src="{% static "img/icons/telegram.svg" %}" alt="">
+                      </li>
+                      <li class="card__rule">
+                        <span id="tripTooltip">Тестовый текст</span>
+                        <img src="{% static "img/icons/telegram.svg" %}" alt="">
+                      </li>
+                      <li class="card__rule">
+                        <span id="tripTooltip">Тестовый текст</span>
+                        <img src="{% static "img/icons/telegram.svg" %}" alt="">
+                      </li>
+                      <li class="card__rule">
+                        <span id="tripTooltip">Тестовый текст</span>
+                        <img src="{% static "img/icons/telegram.svg" %}" alt="">
+                      </li>
+                    </ul>
+                    <div class="card__cancel">Отменить</div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %} {% endcomment %}
+          </div>
+        </div>
+      </div>
+      <a href="{% url 'main:logout' %}" class="content__logout">Выйти</a>
+    </div>
+  </main>
+{% endblock content %}
+{% block script %}
+  <script>
+    function setField(fields, action, index) {
+      action.addEventListener("click", () => {
+        action.innerHTML = `<img width="30" height="30" id="fieldSuccess${index}" src="{% static "img/icons/success.svg" %}" alt=""><img width="30" height="30" id="fieldCancel${index}" src="{% static "img/icons/cancel.svg" %}" alt="">`;
+        const field = fields[index];
+        const valueElement = field.querySelector(".field__value");
+        const inputElement = field.querySelector(".field__input input");
+        let value = valueElement.textContent.trim();
+        if (value.toLowerCase() === "не указано") {
+          value = null;
+        }
+        inputElement.value = value;
+        valueElement.style.display = "none";
+        inputElement.parentElement.style.display = "block";
+        inputElement.focus();
+        action.querySelector(`#fieldSuccess${index}`).addEventListener('click', () => {
+          let data = {};
+          fields.forEach((field_, index) => {
+            const inputs = document.querySelectorAll("#dataInput");
+            let value_ = dataInput[index].value;
+            if (value_.trim().toLowerCase() == "" || value_.trim().toLowerCase() == null || value_.trim().toLowerCase() == "none") {
+              value_ = null
+            }
+            data[fields[index].dataset.name] = value_;
+          });
+          let body = new FormData();
+          body.append("data", JSON.stringify(data));
+          fetch(`/api/v1/main/change_user_data`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${document.querySelector("#authToken").value}`,
+            },
+            body: body
+          })
+            .then(response => response.json())
+            .then(data => {
+              window.location.reload();
+            })
+            .catch(error => alert(error))
+        });
+        action.querySelector(`#fieldCancel${index}`).addEventListener('click', () => {
+          window.location.reload();
+        });
+      });
+    }
+  </script>
+  <script>
+    const fields = document.querySelectorAll("#field");
+
+    fields.forEach((field, i) => {
+      let action = field.querySelector(".field__action");
+      setField(fields, action, i);
+    });
+  </script>
+  <script>
+  function insertCards(data, option) {
+    travelsCards.innerHTML = "";
+    data.forEach(item => {
+      let avatar;
+      if (item.user.avatar) {
+        avatar = item.user.avatar;
+      } else {
+        avatar = `{% static "img/def_pic_profile.png" %}`;
+      }
+      let car = item.car.brand;
+      if (item.car.model) {
+        car += ` ${item.car.model}`;
+      }
+      const card = document.createElement("div");
+      card.classList.add("travels__card");
+      card.classList.add("card");
+
+      card.innerHTML = `
+      <div class="card__column">
+        <div class="card__block-1">
+          <div class="card__datetimes">
+            <p>
+              ${item.departure_time} <span>${item.departure_date}</span>
+            </p>
+            <span></span>
+            <p>
+              ${item.arrival_time} <span>${item.arrival_date}</span>
+            </p>
+          </div>
+          <div class="card__cities">
+            <p>${item.departure_city}</p>
+            <p>${item.destination_city}</p>
+          </div>
+        </div>
+        <div class="card__block-2">
+          <div class="card__driver">
+            <img src="${avatar}" alt="" class="card__driver-avatar">
+            <div class="card__driver-info">
+              <p>${item.user.first_name} ${item.user.last_name}</p>
+              <span>${car}</span>
+            </div>
+          </div>
+          <div class="card__price">${item.price}</div>
+        </div>
+        <div class="card__block-3">Осталось ${item.still_places_left} места</div>
+        <div class="card__block-4">
+          <ul class="card__rules">
+            <li class="card__rule">
+              <span id="tripTooltip">Тестовый текст</span>
+              <img src="{% static "img/icons/telegram.svg" %}" alt="">
+            </li>
+            <li class="card__rule">
+              <span id="tripTooltip">Тестовый текст</span>
+              <img src="{% static "img/icons/telegram.svg" %}" alt="">
+            </li>
+            <li class="card__rule">
+              <span id="tripTooltip">Тестовый текст</span>
+              <img src="{% static "img/icons/telegram.svg" %}" alt="">
+            </li>
+            <li class="card__rule">
+              <span id="tripTooltip">Тестовый текст</span>
+              <img src="{% static "img/icons/telegram.svg" %}" alt="">
+            </li>
+            <li class="card__rule">
+              <span id="tripTooltip">Тестовый текст</span>
+              <img src="{% static "img/icons/telegram.svg" %}" alt="">
+            </li>
+          </ul>
+          <div class="card__cancel" data-id="${item.pk}" id="cancelBtn">Отменить</div>
+        </div>
+      </div>
+      `;
+      travelsCards.appendChild(card);
+    });
+    const cancelBtns = document.querySelectorAll("#cancelBtn");
+    cancelBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        fetch(`/api/v1/main/cancel_trip?trip_id=${btn.dataset.id}&option=${option}`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${document.querySelector("#authToken").value}`,
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.debug(data);
+            const parent = btn.closest('.card');
+            console.debug(parent);
+            parent.remove();
+          })
+          .catch(error => console.error(error));
+      });
+    });
+  }
+  </script>
+  <script src="{% static "js/profile.script.js" %}"></script>
+{% endblock script %}
+<div class="warpper">
+  <header class="header">
+  </header>
+  <main class="content">
+  </main>
+  <footer class="footer">
+  </footer>
+</div>
+<style>
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  .content {
+    flex: 1 1 100%;
+  }
+</style>

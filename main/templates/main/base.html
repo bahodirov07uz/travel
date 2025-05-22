@@ -1,0 +1,208 @@
+{% load static %}
+<html lang="ru">
+    <head>
+        <meta name="description"
+              content="твой Попутчик - сервис для поиска попутчиков">
+        <meta name="keywords"
+              content="попутчик, поездки, путешествия, совместные поездки">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/null.css' %}">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/header.css' %}">
+        <link rel="stylesheet" href="{% static 'main/profile.css' %}">
+
+        {% comment %} <link rel="stylesheet" href="{% static 'css/notification.css' %}"> {% endcomment %}
+        {% block css %}
+        {% endblock css %}
+        <title>
+            {% block title %}
+            {% endblock title %}
+        | твой Попутчик</title>
+        <style>
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--color-lightgray);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--color-lightergray);
+        }
+        </style>
+    </head>
+    <body>
+        {% comment %} <div class="alert fade alert-simple alert-success alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show">
+            <button type="button" class="close font__size-18" data-dismiss="alert">
+                <span aria-hidden="true"><a>
+                    <i class="fa fa-times greencross"></i>
+                </a></span>
+                <span class="sr-only">Close</span>
+            </button>
+            <i class="start-icon far fa-check-circle faa-tada animated"></i>
+            <strong class="font__weight-semibold">Well done!</strong> You successfullyread this important.
+        </div> {% endcomment %}
+        <div class="overlay" id="overlay"></div>
+        <header>
+            <div class="header-container">
+                <a href="{% url 'main:main' %}" class="site-title">
+                    <h1 class="brand-name">
+                        <span>твой Попутчик</span>
+                    </h1>
+                </a>
+                <div class="header-buttons">
+                    {% if user.is_authenticated %}
+                        <div class="notifications">
+                            <span class="notifications__counter">0</span>
+                            <img src="{% static "img/icons/notification.svg" %}" id="notificationsMenuButton" alt="">
+                            <div class="notifications__menu menu" id="notificationsMenu">
+                                {% comment %} <span class="menu__close">X</span> {% endcomment %}
+                                <div class="menu__delete" id="deleteNotifications">Очистить все</div>
+                                <ul class="menu__list">
+                                    {% comment %} <li class="menu__item">
+                                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt iure, optio quae unde obcaecati dolor pariatur atque nulla eos. Consequatur voluptatum distinctio earum modi harum et fuga, in explicabo a?
+                                    </li>
+                                    <li class="menu__item">
+                                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt iure, optio quae unde obcaecati dolor pariatur atque nulla eos. Consequatur voluptatum distinctio earum modi harum et fuga, in explicabo a?
+                                    </li>
+                                    <li class="menu__item">
+                                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt iure, optio quae unde obcaecati dolor pariatur atque nulla eos. Consequatur voluptatum distinctio earum modi harum et fuga, in explicabo a?
+                                    </li>
+                                    <li class="menu__item">
+                                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt iure, optio quae unde obcaecati dolor pariatur atque nulla eos. Consequatur voluptatum distinctio earum modi harum et fuga, in explicabo a?
+                                    </li> {% endcomment %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <a href="{% url "main:add_trip" %}">
+                        <button class="add-trip" id="addButton">Добавить поездку</button>
+                        <img src="{% static "img/plus_nav.svg" %}" alt="">
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url "main:profile" %}">
+                            <button class="profile" id="profileButton">Профиль</button>
+                            <img src="{% static "img/profile-nav.svg" %}" alt="">
+                        </a>
+                    {% else %}
+                        <a href="{% url "main:login" %}">
+                            <button class="login" id="loginButton">Вход/Регистрация</button>
+                            <img src="{% static "img/auth_nav.svg" %}" alt="">
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+        <input type="hidden"
+               value="{{ user.userprofile.auth_token }}"
+               id="authToken">
+        <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Перенаправление на страницу входа/регистрации
+        document.getElementById('loginButton')?.addEventListener('click', function() {
+            window.location.href = "{% url 'main:login' %}";
+        });
+
+        // Перенаправление на страницу профиля
+        document.getElementById('profileButton')?.addEventListener('click', function() {
+            window.location.href = "{% url 'main:profile' %}";
+        });
+
+        // Перенаправление при нажатии на кнопку "Добавить поездку"
+        document.getElementById('addButton').addEventListener('click', function() {
+            {% if user.is_authenticated %}
+                window.location.href = "{% url 'main:add_trip' %}";
+            {% else %}
+                window.location.href = "{% url 'main:register' %}";
+            {% endif %}
+        });
+    });
+        </script>
+        {% block content %}
+        {% endblock content %}
+        {% block catalog %}
+        {% endblock catalog %}
+        {% block footer %}
+        {% endblock footer %}
+        <script src="{% static "js/auth.js" %}"></script>
+        <script src="{% static "js/header.script.js" %}"></script>
+        <script>
+            function eventListenerNotificationsBtns() {
+                const notificationsActions = document.querySelectorAll(".notification-action");
+
+                if (notificationsActions) {
+                    console.log(notificationsActions);
+                    notificationsActions.forEach((button) => {
+                        button.addEventListener("click", function () {
+                            const notificationId = this.dataset.notificationId;
+                            const action = this.dataset.action;
+                            console.log(
+                                `Обработка действия ${action} для уведомления с ID: ${notificationId}`
+                            );
+                            fetch(`/api/v1/main/handle_passenger_request?notification_id=${notificationId}&action=${action}`, {
+                                method: "POST",
+                                headers: {
+                                    "Authorization": `Bearer ${authToken.value}`
+                                },
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        this.parentNode.remove();
+                                    } else {
+                                        console.error(data.error);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("There was a problem with the fetch operation:", error);
+                                });
+                        });
+                    });
+                }
+                const deleteAllNotifications = document.querySelector('#deleteNotifications');
+                const deleteNotificationsBtns = document.querySelectorAll('#deleteNotification');
+                
+                if (deleteAllNotifications && deleteNotificationsBtns) {
+                    deleteAllNotifications.addEventListener('click', () => {
+                        deleteNotification();
+                        deleteAllNotifications.parentNode.querySelector('.menu__list').innerHTML = '<p>Уведомлений нет</p>';
+                        deleteAllNotifications.parentNode.parentNode.querySelector('.notifications__counter').style = "display: none";
+                        deleteAllNotifications.remove()
+                    });
+                    let is_replace = false;
+                    deleteNotificationsBtns.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            deleteNotification(btn.dataset.id);
+                            btn.parentNode.parentNode.remove();
+                            let counter = deleteAllNotifications.parentNode.parentNode.querySelector('.notifications__counter');
+                            if (Number(counter.textContent) > 0) {
+                                counter.textContent = Number(counter.textContent) - 1
+                            }
+                            if (is_replace) {
+                                deleteAllNotifications.parentNode.querySelector('.menu__list').innerHTML = '<p>Уведомлений нет</p>';
+                                deleteAllNotifications.parentNode.parentNode.querySelector('.notifications__counter').style = "display: none";
+                                deleteAllNotifications.remove()
+                            }
+                            if (Number(counter.textContent) - 1 == 0) {
+                                is_replace = true;
+                            }
+                        })
+                    });
+                }
+            }
+        </script>
+        <script src="{% static "js/notifications.script.js" %}"></script>
+        {% block script %}
+        {% endblock script %}
+    </body>
+</html>

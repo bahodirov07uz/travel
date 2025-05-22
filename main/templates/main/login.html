@@ -1,0 +1,44 @@
+{% extends "main/base1.html" %}
+{% load static %}
+
+{% block css %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'main/register.css' %}">
+{% endblock %}
+
+{% block title %}
+Регистрация
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="image-side">
+        <img src="{% static 'img/reg_img.jpg' %}" alt="Car Image">
+    </div>
+    <div class="form-side">
+        <h1>Добро пожаловать, <br> авторизуйтесь в <span>Название</span></h1>
+        <p>Введите ваши данные ниже</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="ivanivanov@gmail.com" value="{{ form.data.email|default_if_none:'' }}">
+            {{ form.errors.email }}
+
+
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" placeholder="********">
+            {{ form.errors.password }}
+
+            <div class="links-container">
+                <a href="{% url 'main:main' %}">Назад</a>
+                <a href="{% url 'main:register' %}">Зарегистрироваться</a>
+            </div>
+
+            <button type="submit">Авторизоваться</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

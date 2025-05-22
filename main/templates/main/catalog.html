@@ -1,0 +1,248 @@
+{% extends "main/base.html" %}
+{% load add_class %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/catalog.css' %}">
+{% endblock css %}
+{% block title %}
+    Название
+{% endblock title %}
+{% block content %}
+    <div class="container">
+        <main class="content">
+            <div class="content__filter-container">
+                <form id="filter-form"
+                      action="{% url 'main:catalog' %}"
+                      method="get"
+                      class="search-filters">
+                    <div class="filter-group">
+                        <label for="departure-city">Город отправления</label>
+                        <div class="input-container">
+                            <img src="{% static 'img/departure-icon.svg' %}"
+                                 alt="Icon"
+                                 class="input-icon">
+                            <input type="text"
+                                   id="departure-city"
+                                   name="departure_city"
+                                   value="{{ selected_departure_city }}"
+                                   autocomplete="off"
+                                   placeholder="Москва"
+                                   data-url="{% url 'main:city_suggestions' %}">
+                            <div id="departure-city-suggestions" class="suggestions"></div>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label for="arrival-city">Город прибытия</label>
+                        <div class="input-container">
+                            <img src="{% static 'img/departure-icon.svg' %}"
+                                 alt="Icon"
+                                 class="input-icon">
+                            <input type="text"
+                                   id="arrival-city"
+                                   name="destination_city"
+                                   value="{{ selected_destination_city }}"
+                                   autocomplete="off"
+                                   placeholder="Екатеринбург"
+                                   data-url="{% url 'main:city_suggestions' %}">
+                            <div id="arrival-city-suggestions" class="suggestions"></div>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label for="trip-date">Дата поездки</label>
+                        <div class="input-container">
+                            <img src="{% static 'img/date-icon.svg' %}" alt="Icon" class="input-icon">
+                            <input type="date" id="trip-date" name="date" value="{{ selected_date }}">
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label for="passengers">Количество пассажиров</label>
+                        <div class="select-container">
+                            <img src="{% static 'img/passengers-icon.svg' %}"
+                                 alt="Icon"
+                                 class="select-icon">
+                            <select id="passengers" name="passengers">
+                                <option value="" {% if selected_passengers == '' %}selected{% endif %}>Выберите количество</option>
+                                <option value="1" {% if selected_passengers == '1' %}selected{% endif %}>1 человек</option>
+                                <option value="2" {% if selected_passengers == '2' %}selected{% endif %}>2 человека</option>
+                                <option value="3" {% if selected_passengers == '3' %}selected{% endif %}>3 человека</option>
+                                <option value="4" {% if selected_passengers == '4' %}selected{% endif %}>4 человека</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="price_min" value="{{ selected_price_min }}">
+                    <input type="hidden" name="price_max" value="{{ selected_price_max }}">
+                    <button class="search-button" type="submit">Найти поездку</button>
+                </form>
+                <div class="additional-filters">
+                    <a href="{% url 'main:catalog' %}" class="reset-filters">Сбросить фильтры</a>
+                    <form id="cost-filter-form" action="{% url 'main:catalog' %}" method="get">
+                        <input type="hidden"
+                               name="departure_city"
+                               value="{{ selected_departure_city }}">
+                        <input type="hidden"
+                               name="destination_city"
+                               value="{{ selected_destination_city }}">
+                        <input type="hidden" name="date" value="{{ selected_date }}">
+                        <input type="hidden" name="passengers" value="{{ selected_passengers }}">
+                        <div class="filter-group">
+                            <label for="trip-cost" class="trip-cost">Стоимость поездки</label>
+                            <div class="range-slider">
+                                <input type="range"
+                                       id="min-cost"
+                                       name="price_min"
+                                       min="{{ min_price }}"
+                                       max="{{ max_price }}"
+                                       value="{{ selected_price_min }}">
+                                <input type="range"
+                                       id="max-cost"
+                                       name="price_max"
+                                       min="{{ min_price }}"
+                                       max="{{ max_price }}"
+                                       value="{{ selected_price_max }}">
+                                <div class="slider-track"></div>
+                            </div>
+                            <div class="range-values">
+                                <span>от</span>
+                                <input type="number"
+                                       id="min-cost-value"
+                                       name="price_min"
+                                       value="{{ selected_price_min }}"
+                                       min="{{ min_price }}"
+                                       max="{{ max_price }}">
+                                ₽
+                                <span>до</span>
+                                <input type="number"
+                                       id="max-cost-value"
+                                       name="price_max"
+                                       value="{{ selected_price_max }}"
+                                       min="{{ min_price }}"
+                                       max="{{ max_price }}">
+                                ₽
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <section class="trip-results" id="trips-container">
+                <p>Всего найдено {{ trips|length }} поездок</p>
+                {% comment %} Поездки {% endcomment %}
+                {% for trip in trips %}
+                    <div class="content__trip trip">
+                        <div class="trip__row">
+                            <div class="trip__row-first-block">
+                                <div class="trip__datetimes">
+                                    <div class="trip__datetime">
+                                        <p>{{ trip.departure_time|time:"H:i" }}</p>
+                                        <span>{{ trip.departure_date|date:"d.m.Y" }}</span>
+                                    </div>
+                                    <div class="trip__empty"></div>
+                                    <div class="trip__datetime">
+                                        <p>{{ trip.arrival_time|time:"H:i" }}</p>
+                                        <span>{{ trip.arrival_date|date:"d.m.Y" }}</span>
+                                    </div>
+                                </div>
+                                <div class="trip__cities">
+                                    <div class="trip__city">{{ trip.departure_city.name }}</div>
+                                    <div class="trip__city">{{ trip.destination_city.name }}</div>
+                                </div>
+                            </div>
+                            <div class="trip__row-second-block">
+                                <div class="trip__driver">
+                                    <div class="trip__driver-avatar">
+                                        {% if trip.user.avatar %}
+                                            <img src="{{ trip.user.avatar.url }}">
+                                        {% else %}
+                                            <img src="{% static "img/profile-nav.svg" %}" alt="">
+                                        {% endif %}
+                                    </div>
+                                    <div class="trip__driver-info">
+                                        <div class="trip__driver-name">{{ trip.user.first_name }} {{ trip.user.last_name }}</div>
+                                        <div class="trip__driver-car">{{ trip.car.brand }}</div>
+                                    </div>
+                                </div>
+                                <div class="trip__info">
+                                    <div class="trip__price">{{ trip.price | price_to_int }}</div>
+                                    <div class="trip__places">осталось {{ trip.max_passengers }} места</div>
+                                </div>
+                                <div class="trip__select-button"
+                                     id="tripSelectBtn"
+                                     data-id="{{ trip.id }}">Выбрать</div>
+                            </div>
+                        </div>
+                        <div class="trip__rules">
+                            <ul>
+                                <li class="trip__rule">
+                                    <span id="tripTooltip">Тестовый текст</span>
+                                    <img src="{% static "img/icons/telegram.svg" %}" alt="">
+                                </li>
+                                <li class="trip__rule">
+                                    <span id="tripTooltip">Тестовый текст</span>
+                                    <img src="{% static "img/icons/telegram.svg" %}" alt="">
+                                </li>
+                                <li class="trip__rule">
+                                    <span id="tripTooltip">Тестовый текст</span>
+                                    <img src="{% static "img/icons/telegram.svg" %}" alt="">
+                                </li>
+                                <li class="trip__rule">
+                                    <span id="tripTooltip">Тестовый текст</span>
+                                    <img src="{% static "img/icons/telegram.svg" %}" alt="">
+                                </li>
+                                <li class="trip__rule">
+                                    <span id="tripTooltip">Тестовый текст</span>
+                                    <img src="{% static "img/icons/telegram.svg" %}" alt="">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% comment %} Конец поездок {% endcomment %}
+            </section>
+            <div id="customModal" class="custom-modal">
+                <div class="custom-modal-content">
+                    <span class="custom-close-btn">&times;</span>
+                    <div class="custom-driver-info">
+                        <h3>О водителе</h3>
+                        <img src="{% static 'img/women-high-fiving-car.png' %}"
+                             alt="Driver"
+                             class="custom-driver-photo"
+                             id="driver-photo">
+                        <div class="custom-driver-details">
+                            <h2 id="driver-name">
+                                <a href="{% url 'main:profile_user' %}?user_id={{ driver_id }}">{{ driver_name }} {{ driver_surname }} <span id="driver-rating" class="custom-rating">{{ driver_rating }}&#9733;</span></a>
+                            </h2>
+                            <p id="driver-description">Описание водителя</p>
+                        </div>
+                    </div>
+                    <div class="custom-trip-details">
+                        <h3>Детали поездки</h3>
+                        <div class="custom-trip-info">
+                            <div class="custom-from">
+                                <p>
+                                    <strong>Откуда</strong>
+                                </p>
+                                <p id="trip-from-address">Адрес отправления</p>
+                                <p id="trip-from-time">Время отправления</p>
+                                <p id="trip-passengers">Количество пассажиров</p>
+                            </div>
+                            <div class="custom-to">
+                                <p>
+                                    <strong>Куда</strong>
+                                </p>
+                                <p id="trip-to-address">Адрес прибытия</p>
+                                <p id="trip-to-time">Время прибытия</p>
+                                <p id="trip-price">Стоимость поездки</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <button id="scrollToTopBtn" title="Наверх">
+                <img src="{% static 'img/arrow-up.svg' %}" alt="Наверх">
+            </button>
+        </div>
+    </div>
+{% endblock content %}
+{% block script %}
+    <script src="{% static 'js/search.js' %}"></script>
+    <script src="{% static "js/catalog.js" %}"></script>
+{% endblock script %}

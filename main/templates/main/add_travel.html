@@ -1,0 +1,201 @@
+{% extends "main/base.html" %}
+{% load add_class %}
+{% load static %}
+{% block css %}
+    <!--suppress ALL -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main/add.css' %}">
+{% endblock %}
+{% block title %}Добавить поездку{% endblock %}
+{% block content %}
+    <main class="main-container">
+        <section class="trip-form">
+            <h1>Добавить поездку</h1>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    {% if form.errors %}
+                        <div class="error-messages">
+                            <ul>
+                                {% for field, error_list in form.errors.items %}
+                                    {% for error in error_list %}<li>{{ error }}</li>{% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    <div class="input-group">
+                        <div class="full-width">
+                            <label for="id_car_name">Название машины</label>
+                            {{ form.car_name.errors }}
+                            {{ form.car_name|add_class:"full-width-input" }}
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group-input">
+                                <label for="departure">Город отправления</label>
+                                {{ form.departure_city.errors }}
+                                {{ form.departure_city|add_class:"half-width-input" }}
+                                <datalist id="departure-list"></datalist>
+                            </div>
+                            <div class="form-group-input">
+                                <label for="arrival">Город прибытия</label>
+                                {{ form.destination_city.errors }}
+                                {{ form.destination_city|add_class:"half-width-input" }}
+                                <datalist id="arrival-list"></datalist>
+                            </div>
+                            <div class="form-group-input">
+                                <label for="id_departure_time">Время отправления</label>
+                                {{ form.departure_time.errors }}
+                                {{ form.departure_time|add_class:"half-width-input" }}
+                            </div>
+                            <div class="form-group-input">
+                                <label for="id_arrival_time">Время прибытия</label>
+                                {{ form.arrival_time.errors }}
+                                {{ form.arrival_time|add_class:"half-width-input" }}
+                            </div>
+                            <div class="form-group-input">
+                                <label for="id_max_passengers">Количество пассажиров</label>
+                                {{ form.max_passengers.errors }}
+                                {{ form.max_passengers|add_class:"half-width-input" }}
+                            </div>
+                            <div class="form-group-input">
+                                <label for="id_price">Стоимость поездки</label>
+                                {{ form.price.errors }}
+                                {{ form.price|add_class:"half-width-input" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group textarea-grid">
+                    <label style="margin-bottom: -20px;">Комментарий</label>
+                    {{ form.comment.errors }}
+                    {{ form.comment|add_class:"full-width-textarea" }}
+                </div>
+                <span class="custom-span">Фотография автомобиля</span>
+                <div class="photo-container" id="photoContainer">
+                    <div class="photo-preview-container" id="photoPreviewContainer"></div>
+                    <div class="photo-group" id="photoGroup">
+                        <input type="file" id="id_car_image" name="car_image" style="display: none;">
+                        <label for="id_car_image">
+                            <img src="{% static 'img/add_photo.png' %}"
+                                 alt="фото машины"
+                                 class="car-photo"
+                                 id="carPhotoLabel">
+                        </label>
+                        {{ form.car_image.errors }}
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" style="background-color: var(--color-darkblue)">Отменить</button>
+                    <button type="submit" style="background-color: var(--color-lightblue)">Опубликовать поездку</button>
+                </div>
+            </form>
+        </section>
+        <section class="section trips">
+            <div class="trips-header" style="display: flex;">
+                <h1>Мои поездки</h1>
+                <button class="sort-button">
+                    <span></span>
+                </button>
+            </div>
+            <div class="trip-list">
+                {% for trip in trips %}
+                    <div class="trip-card trip-your">
+                        <div class="trip-header">
+                            <div class="trip-time">
+                                <div class="time">{{ trip.departure_time|time:"H:i" }}</div>
+                                <div class="svg-container">
+                                    <svg class="svg-large"
+                                         width="63"
+                                         height="14"
+                                         viewBox="0 0 63 14"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <rect width="50" height="2" transform="translate(13 6)" fill="#444766" />
+                                        <path d="M7 0C3.14008 0 0 3.14008 0 7C0 10.8599 3.14008 14 7 14C10.8599 14 14 10.8599 14 7C14 3.14008 10.8599 0 7 0ZM7 12.8333C3.7835 12.8333 1.16667 10.2165 1.16667 7C1.16667 3.7835 3.7835 1.16667 7 1.16667C10.2165 1.16667 12.8333 3.7835 12.8333 7C12.8333 10.2165 10.2165 12.8333 7 12.8333ZM9.33333 7C9.33333 8.28858 8.28858 9.33333 7 9.33333C5.71142 9.33333 4.66667 8.28858 4.66667 7C4.66667 5.71142 5.71142 4.66667 7 4.66667C8.28858 4.66667 9.33333 5.71142 9.33333 7Z" fill="#444766" />
+                                    </svg>
+                                    <svg class="svg-small"
+                                         width="14"
+                                         height="14"
+                                         viewBox="0 0 14 14"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 0C3.14008 0 0 3.14008 0 7C0 10.8599 3.14008 14 7 14C10.8599 14 14 10.8599 14 7C14 3.14008 10.8599 0 7 0ZM7 12.8333C3.7835 12.8333 1.16667 10.2165 1.16667 7C1.16667 3.7835 3.7835 1.16667 7 1.16667C10.2165 1.16667 12.8333 3.7835 12.8333 7C12.8333 10.2165 10.2165 12.8333 7 12.8333ZM9.33333 7C9.33333 8.28858 8.28858 9.33333 7 9.33333C5.71142 9.33333 4.66667 8.28858 4.66667 7C4.66667 5.71142 5.71142 4.66667 7 4.66667C8.28858 4.66667 9.33333 5.71142 9.33333 7Z" fill="#444766" />
+                                    </svg>
+                                    <div class="duration">{{ trip.duration_string }}</div>
+                                    <svg class="svg-large"
+                                         width="63"
+                                         height="14"
+                                         viewBox="0 0 63 14"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <rect width="50" height="2" transform="matrix(-1 0 0 -1 50 8)" fill="#444766" />
+                                        <path d="M55.998 14C59.858 14 62.998 10.8599 62.998 7C62.998 3.14008 59.858 0 55.998 0C52.1381 0 48.998 3.14008 48.998 7C48.998 10.8599 52.1381 14 55.998 14ZM55.998 1.16667C59.2145 1.16667 61.8314 3.7835 61.8314 7C61.8314 10.2165 59.2145 12.8333 55.998 12.8333C52.7815 12.8333 50.1647 10.2165 50.1647 7C50.1647 3.7835 52.7815 1.16667 55.998 1.16667ZM53.6647 7C53.6647 5.71142 54.7095 4.66667 55.998 4.66667C57.2866 4.66667 58.3314 5.71142 58.3314 7C58.3314 8.28858 57.2866 9.33333 55.998 9.33333C54.7095 9.33333 53.6647 8.28858 53.6647 7Z" fill="#444766" />
+                                    </svg>
+                                    <svg class="svg-small"
+                                         width="14"
+                                         height="14"
+                                         viewBox="0 0 14 14"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 0C3.14008 0 0 3.14008 0 7C0 10.8599 3.14008 14 7 14C10.8599 14 14 10.8599 14 7C14 3.14008 10.8599 0 7 0ZM7 12.8333C3.7835 12.8333 1.16667 10.2165 1.16667 7C1.16667 3.7835 3.7835 1.16667 7 1.16667C10.2165 1.16667 12.8333 3.7835 12.8333 7C12.8333 10.2165 10.2165 12.8333 7 12.8333ZM9.33333 7C9.33333 8.28858 8.28858 9.33333 7 9.33333C5.71142 9.33333 4.66667 8.28858 4.66667 7C4.66667 5.71142 5.71142 4.66667 7 4.66667C8.28858 4.66667 9.33333 5.71142 9.33333 7Z" fill="#444766" />
+                                    </svg>
+                                </div>
+                                <div class="time">{{ trip.arrival_time|time:"H:i" }}</div>
+                            </div>
+                            <div class="trip-price"></div>
+                            <div class="trip-locations">
+                                <div class="location">{{ trip.departure_city }}</div>
+                                <div class="location" style="text-align: right;">{{ trip.destination_city }}</div>
+                            </div>
+                        </div>
+                        <div class="trip-details">
+                            <div class="trip-date">{{ trip.departure_date|date:"d.m.Y" }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        <div id="customModal" class="custom-modal">
+            <div class="custom-modal-content">
+                <span class="custom-close-btn">&times;</span>
+                <div class="custom-driver-info">
+                    <h3>О водителе</h3>
+                    <img src="{% static 'img/women-high-fiving-car.png' %}"
+                         alt="Driver"
+                         class="custom-driver-photo">
+                    <div class="custom-driver-details">
+                        <h2>
+                            Имя фамилия <span class="custom-rating">4,9&#9733;</span>
+                        </h2>
+                        <p>описание водителя описание водителя описание водителя описание водителя</p>
+                    </div>
+                </div>
+                <div class="custom-trip-details">
+                    <h3>Детали поездки</h3>
+                    <div class="custom-trip-info">
+                        <div class="custom-from">
+                            <p>
+                                <strong>Откуда</strong>
+                            </p>
+                            <p>Тверь, ул. Можаского, д. 25</p>
+                            <p>23 апреля, 23:46</p>
+                            <p>2 пассажира</p>
+                        </div>
+                        <div class="custom-to">
+                            <p>
+                                <strong>Куда</strong>
+                            </p>
+                            <p>Москва, ул. Можаского, д. 25</p>
+                            <p>23 апреля, 23:46</p>
+                            <p>580 Р</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}
+{% block script %}
+    <script src="{% static 'js/add_trip.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+{% endblock script %}

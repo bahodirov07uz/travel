@@ -1,0 +1,70 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load add_class %}
+
+{% block css %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="{% static 'main/enemy_profile.css' %}">
+{% endblock %}
+
+{% block title %}
+Profile and Comments
+{% endblock %}
+{% block content %}
+
+    <main>
+    <div class="section profile">
+        <h2>Профиль</h2>
+        <div class="profile-details">
+            <div class="profile-icon" id="avatar-icon">
+                {% if user_profile.avatar %}
+                <img src="{{ user_profile.avatar.url }}" alt="Profile Picture">
+                {% else %}
+                &#128100;
+                {% endif %}
+            </div>
+
+            <div class="name-rating">
+                <div class="name">{{ user_profile.first_name }} {{ user_profile.last_name }}</div>
+<!--                <div class="rating">4,9★</div>-->
+            </div>
+            <div class="info">
+                <br>
+                На сайте с: {{ user_profile.user.date_joined|date:"d.m.y" }}<br>
+                Поездок:  {{ trip_count }}
+            </div>
+            <div class="about"><strong>О пользователе:</strong><br> {{ user_profile.about_me }}</div>
+        </div>
+    </div>
+    <div class="section comments">
+        <h2>Комментарии</h2>
+        <div class="comments-list" id="commentsList">
+            {% for comment in comments %}
+                <div class="comment">
+                    <div class="author">{{ comment.author.first_name }} {{ comment.author.last_name }}</div>
+                    <div class="date">{{ comment.date|date:"d.m.Y H:i" }}</div>
+                    <div class="text">{{ comment.text }}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="show-more" id="showMore">
+            <button onclick="showMoreComments()">Показать ещё</button>
+        </div>
+    </div>
+        {% if form %}
+    <div class="section comment-form">
+        <h2>Написать комментарий</h2>
+        <form method="post" action="?user_id={{ user_profile.id }}">
+            {% csrf_token %}
+            <div>
+                <label for="id_text">Комментарий:</label>
+                {{ form.text|add_class:"form-control" }}
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+    </div>
+        {% endif %}
+</main>
+    <script src="{% static 'js/enemy_profile.js' %}"></script>
+{% endblock %}

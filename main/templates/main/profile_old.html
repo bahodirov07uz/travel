@@ -1,0 +1,299 @@
+{% comment %} {% extends "main/base.html" %}
+{% load static %}
+
+{% block css %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main/profile.css' %}">
+{% endblock %}
+
+{% block title %}
+Мои поездки
+{% endblock %}
+
+{% block content %}
+
+    <main>
+<section class="section trips">
+    <div class="trips-header">
+        <h2>Мои поездки</h2>
+        <button class="sort-button"><span></span></button>
+    </div>
+
+    {% for trip_info in paginated_trips %}
+    <div class="trip-card {% if trip_info.user_trip %}trip-your{% else %}trip-poputrchik{% endif %}" style="background-color: {% if trip_info.user_trip %}#f0f0f0{% else %}#e0f0ff{% endif %};">
+        <div class="card-div">
+            <div class="card-div-svg">
+                <div class="trip-time">
+            <div class="time">{{ trip_info.trip.departure_time|time:"H:i" }}</div>
+            <div class="svg-container">
+                <svg class="svg-large" width="63" height="14" viewBox="0 0 63 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="50" height="2" transform="translate(13 6)" fill="#444766"/>
+                    <path d="M7 0C3.14008 0 0 3.14008 0 7C0 10.8599 3.14008 14 7 14C10.8599 14 14 10.8599 14 7C14 3.14008 10.8599 0 7 0ZM7 12.8333C3.7835 12.8333 1.16667 10.2165 1.16667 7C1.16667 3.7835 3.7835 1.16667 7 1.16667C10.2165 1.16667 12.8333 3.7835 12.8333 7C12.8333 10.2165 10.2165 12.8333 7 12.8333ZM9.33333 7C9.33333 8.28858 8.28858 9.33333 7 9.33333C5.71142 9.33333 4.66667 8.28858 4.66667 7C4.66667 5.71142 5.71142 4.66667 7 4.66667C8.28858 4.66667 9.33333 5.71142 9.33333 7Z" fill="#444766"/>
+                </svg>
+                <svg class="svg-small" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 0C3.14008 0 0 3.14008 0 7C0 10.8599 3.14008 14 7 14C10.8599 14 14 10.8599 14 7C14 3.14008 10.8599 0 7 0ZM7 12.8333C3.7835 12.8333 1.16667 10.2165 1.16667 7C1.16667 3.7835 3.7835 1.16667 7 1.16667C10.2165 1.16667 12.8333 3.7835 12.8333 7C12.8333 10.2165 10.2165 12.8333 7 12.8333ZM9.33333 7C9.33333 8.28858 8.28858 9.33333 7 9.33333C5.71142 9.33333 4.66667 8.28858 4.66667 7C4.66667 5.71142 5.71142 4.66667 7 4.66667C8.28858 4.66667 9.33333 5.71142 9.33333 7Z" fill="#444766"/>
+                </svg>
+                <div class="duration">
+                    <span>{{ trip_info.duration_hours }} ч {{ trip_info.duration_minutes }} м</span>
+                </div>
+                <svg class="svg-large" width="63" height="14" viewBox="0 0 63 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="50" height="2" transform="matrix(-1 0 0 -1 50 8)" fill="#444766"/>
+                    <path d="M55.998 14C59.858 14 62.998 10.8599 62.998 7C62.998 3.14008 59.858 0 55.998 0C52.1381 0 48.998 3.14008 48.998 7C48.998 10.8599 52.1381 14 55.998 14ZM55.998 1.16667C59.2145 1.16667 61.8314 3.7835 61.8314 7C61.8314 10.2165 59.2145 12.8333 55.998 12.8333C52.7815 12.8333 50.1647 10.2165 50.1647 7C50.1647 3.7835 52.7815 1.16667 55.998 1.16667ZM53.6647 7C53.6647 5.71142 54.7095 4.66667 55.998 4.66667C57.2866 4.66667 58.3314 5.71142 58.3314 7C58.3314 8.28858 57.2866 9.33333 55.998 9.33333C54.7095 9.33333 53.6647 8.28858 53.6647 7Z" fill="#444766"/>
+                </svg>
+                <svg class="svg-small" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 0C3.14008 0 0 3.14008 0 7C0 10.8599 3.14008 14 7 14C10.8599 14 14 10.8599 14 7C14 3.14008 10.8599 0 7 0ZM7 12.8333C3.7835 12.8333 1.16667 10.2165 1.16667 7C1.16667 3.7835 3.7835 1.16667 7 1.16667C10.2165 1.16667 12.8333 3.7835 12.8333 7C12.8333 10.2165 10.2165 12.8333 7 12.8333ZM9.33333 7C9.33333 8.28858 8.28858 9.33333 7 9.33333C5.71142 9.33333 4.66667 8.28858 4.66667 7C4.66667 5.71142 5.71142 4.66667 7 4.66667C8.28858 4.66667 9.33333 5.71142 9.33333 7Z" fill="#444766"/>
+                </svg>
+            </div>
+            <div class="time">{{ trip_info.trip.arrival_time|time:"H:i" }}</div>
+        </div>
+        <div class="trip-locations">
+            <div class="location">{{ trip_info.trip.departure_city }}</div>
+            <div class="location" style="text-align: right;">{{ trip_info.trip.destination_city }}</div>
+        </div>
+            </div>
+        {% if trip_info.user_trip %}
+        <div class="trip-your-text">Ваша поездка</div>
+        {% else %}
+        <div class="trip-price">{{ trip_info.trip.price }} р</div>
+        {% endif %}
+        </div>
+
+        <div class="footer-card-info">
+            <div class="trip-actions">
+                {% if trip_info.user_trip %}
+                <button class="delete-button" data-trip-id="{{ trip_info.trip.id }}" data-delete-type="trip">Удалить поездку</button>
+                {% else %}
+                <button class="delete-button" data-trip-id="{{ trip_info.trip.id }}" data-delete-type="passenger">Выйти из поездки</button>
+                {% endif %}
+            </div>
+            <div class="trip-details">
+                <div class="trip-date">{{ trip_info.trip.departure_date|date:"d.m.Y" }}</div>
+                                <!-- Пер кнримопок с установленными атрибутами -->
+                    <a href="#" class="openModalBtn trip-link" data-trip-id="{{ trip_info.trip.id }}" data-user-trip="{{ trip_info.user_trip }}">Детали поездки</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if paginated_trips.has_previous %}
+            <a class="step-links-a" href="?page={{ paginated_trips.previous_page_number }}"><img src="{% static 'img/left-arrow.svg' %}"></a>
+        {% else %}
+            <span class="disabled"><img src="{% static 'img/left-arrow.svg' %}"></span>
+        {% endif %}
+
+        <form action="" method="get" class="page-input-form">
+            <input type="number" name="page" min="1" max="{{ paginated_trips.paginator.num_pages }}" value="{{ paginated_trips.number }}" onkeydown="if(event.key === 'Enter') { this.form.submit(); return false; }">
+        </form>
+
+        {% if paginated_trips.has_next %}
+            <a class="step-links-a" href="?page={{ paginated_trips.next_page_number }}"><img src="{% static 'img/right-arrow.svg' %}"></a>
+        {% else %}
+            <span class="disabled"><img src="{% static 'img/right-arrow.svg' %}"></span>
+        {% endif %}
+    </span>
+</div>
+
+
+
+    </section>
+<section class="section profile">
+    <div class="profile-header">
+        <div class="profile-title">
+            <h2>Мой профиль</h2>
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'main:logout' %}" class="profile-logout-form" id="logoutForm">
+                    {% csrf_token %}
+                    <button type="submit" class="profile-btn profile-logout">
+                        <svg class="logout-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                            <g>
+                                <path d="M170.698,448H72.757c-4.814-0.012-8.714-3.911-8.725-8.725V72.725c0.012-4.814,3.911-8.714,8.725-8.725h97.941c17.673,0,32-14.327,32-32s-14.327-32-32-32H72.757C32.611,0.047,0.079,32.58,0.032,72.725v366.549C0.079,479.42,32.611,511.953,72.757,512h97.941c17.673,0,32-14.327,32-32S188.371,448,170.698,448z"/>
+                                <path d="M483.914,188.117l-82.816-82.752c-12.501-12.495-32.764-12.49-45.259,0.011s-12.49,32.764,0.011,45.259l72.789,72.768L138.698,224c-17.673,0-32,14.327-32,32s14.327,32,32,32l0,0l291.115-0.533l-73.963,73.963c-12.042,12.936-11.317,33.184,1.618,45.226c12.295,11.445,31.346,11.436,43.63-0.021l82.752-82.752c37.491-37.49,37.491-98.274,0.001-135.764c0,0-0.001-0.001-0.001-0.001L483.914,188.117z"/>
+                            </g>
+                        </svg>
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+        <div class="profile-icon" id="avatar-icon">
+            {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="Фото" id="avatar-image" width="100">
+            {% else %}
+            <img src="{% static 'img/def_pic.jpg' %}" alt="Фото" width="200">
+            {% endif %}
+        </div>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="profile-info">
+            <div class="profile-item">
+                <span class="profile-label" id="first_name_display">{{ profile.first_name }}</span>
+                <input type="text" name="first_name" class="profile-input" id="first_name_input" value="{{ profile.first_name }}" style="display: none;">
+                <span class="profile-edit" onclick="editField('first_name')">&#9998;</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label" id="last_name_display">{{ profile.last_name }}</span>
+                <input type="text" name="last_name" class="profile-input" id="last_name_input" value="{{ profile.last_name }}" style="display: none;">
+                <span class="profile-edit" onclick="editField('last_name')">&#9998;</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label" id="phone_number_display">{{ profile.phone_number }}</span>
+                <input type="text" name="phone_number" class="profile-input" id="phone_number_input" value="{{ profile.phone_number }}" style="display: none;">
+                <span class="profile-edit" onclick="editField('phone_number')">&#9998;</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label" id="email_display">{{ profile.email }}</span>
+                <input type="email" name="email" class="profile-input" id="email_input" value="{{ profile.email }}" style="display: none;">
+                <span class="profile-edit" onclick="editField('email')">&#9998;</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Обо мне:</span>
+                <span class="profile-label" id="about_me_display">{{ profile.about_me }}</span>
+                <textarea name="about_me" class="profile-input" id="about_me_input" style="display: none;">{{ profile.about_me }}</textarea>
+                <span class="profile-edit" onclick="editField('about_me')">&#9998;</span>
+            </div>
+            <div class="profile-item" style="display: none;">
+                <input type="file" name="avatar" id="avatar-input" class="profile-input" accept="image/*">
+            </div>
+        </div>
+        <div class="profile-actions">
+            <button type="button" class="profile-btn profile-password" onclick="openPasswordModal()">Сменить пароль</button>
+            <button type="submit" class="profile-btn profile-save">Сохранить изменения</button>
+        </div>
+    </form>
+
+
+
+    <!-- Модальное окно для смены пароля -->
+<div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePasswordModal()">&times;</span>
+            <h2>Смена пароля</h2>
+            <form id="passwordForm" method="post" action="{% url 'main:change_password' %}">
+                {% csrf_token %}
+                {{ change_password_form.old_password.label_tag }} {{ change_password_form.old_password }}<br>
+                {{ change_password_form.new_password1.label_tag }} {{ change_password_form.new_password1 }}<br>
+                {{ change_password_form.new_password2.label_tag }} {{ change_password_form.new_password2 }}<br>
+                <button type="submit" class="btn">Сменить пароль</button>
+            </form>
+        </div>
+    </div>
+</section>
+<section class="section notifications">
+    <h2>Уведомления</h2>
+
+    {% for notification in notifications %}
+    <div class="notification">
+        <div>
+            <div class="notification-text">
+                {{ notification.message }}
+                {% if notification.trip %}
+                    - Поездка: {{ notification.trip.departure_city }} -> {{ notification.trip.destination_city }} на {{ notification.trip.departure_date|date:"d.m.Y" }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="notification-info">
+            <div class="notification-date">{{ notification.created_at|date:"d.m.Y" }}</div>
+            {% if not notification.read and "хочет присоединиться к вашей поездке" in notification.message %}
+                <button class="notification-action" data-notification-id="{{ notification.id }}" data-action="accept">Принять</button>
+                <button class="notification-action" data-notification-id="{{ notification.id }}" data-action="decline">Отклонить</button>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+</section>
+    </main>
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Вы уверены, что хотите удалить эту поездку?</p>
+        <div class="modal-buttons">
+            <button id="confirmDelete" class="modal-button modal-button-confirm">Да</button>
+            <button class="modal-button modal-button-cancel">Нет</button>
+        </div>
+    </div>
+</div>
+<div id="customModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-close-btn">&times;</span>
+            <div id="driver-info" class="custom-driver-info" style="display: none;">
+                <h3>О водителе</h3>
+                <img src="{% static 'img/women-high-fiving-car.png' %}" alt="Driver" class="custom-driver-photo" id="driver-photo">
+                <div class="custom-driver-details">
+                    <span id="driver-name">Имя фамилия</span>
+                    <a id="driver-profile-link" href="#">Профиль</a>
+                    <p id="driver-description">Описание водителя</p>
+                </div>
+            </div>
+            <div class="custom-trip-details">
+                <h3>Детали поездки</h3>
+                <div class="custom-trip-info">
+                    <div class="custom-seats-info">
+                        <p><strong>Места</strong></p>
+                        <p id="trip-seats">Занято / Свободно</p>
+                    </div>
+                    <div id="passengers-info" style="display: none; text-align: end;">
+                        <p><strong>Пассажиры</strong></p>
+                        <ul id="passengers-list">
+                            <!-- Пассажиры будут добавлены через JS -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="custom-trip-info">
+                    <div class="custom-from">
+                        <p><strong>Откуда</strong></p>
+                        <p id="trip-from-address">Адрес отправления</p>
+                        <p id="trip-departure-date">Дата и время отправления</p>
+                    </div>
+                    <div class="custom-to">
+                        <p><strong>Куда</strong></p>
+                        <p id="trip-to-address">Адрес прибытия</p>
+                        <p id="trip-arrival-date">Дата и время прибытия</p>
+                    </div>
+                </div>
+                <div id="trip-price-section">
+                    <p><strong>Стоимость</strong></p>
+                    <p id="trip-price">Стоимость поездки</p>
+                </div>
+                <div id="trip-actions" style="display: none;">
+                    <button id="start-trip-btn" class="modal-button modal-button-start" style="display: none;">Начать поездку</button>
+                    <button id="end-trip-btn" class="modal-button modal-button-end" style="display: none;">Завершить поездку</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--<div id="customModal" class="custom-modal">-->
+<!--    <div class="custom-modal-content">-->
+<!--        <span class="custom-close-btn">&times;</span>-->
+<!--        <div class="custom-driver-info">-->
+<!--            <h3>О водителе</h3>-->
+<!--            <img src="{% static 'img/women-high-fiving-car.png' %}" alt="Driver" class="custom-driver-photo" id="driver-photo">-->
+<!--            <div class="custom-driver-details">-->
+<!--                <h2 id="driver-name">Имя фамилия <span id="driver-rating" class="custom-rating">4,9&#9733;</span></h2>-->
+<!--                <p id="driver-description">Описание водителя</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="custom-trip-details">-->
+<!--            <h3>Детали поездки</h3>-->
+<!--            <div class="custom-trip-info">-->
+<!--                <div class="custom-from">-->
+<!--                    <p><strong>Откуда</strong></p>-->
+<!--                    <p id="trip-from-address">Адрес отправления</p>-->
+<!--                    <p id="trip-from-time">Время отправления</p>-->
+<!--                    <p id="trip-passengers">Количество пассажиров</p>-->
+<!--                </div>-->
+<!--                <div class="custom-to">-->
+<!--                    <p><strong>Куда</strong></p>-->
+<!--                    <p id="trip-to-address">Адрес прибытия</p>-->
+<!--                    <p id="trip-to-time">Время прибытия</p>-->
+<!--                    <p id="trip-price">Стоимость поездки</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!-- <script src="{% static 'js/test.js' %}"></script> -->
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock content %} {% endcomment %}

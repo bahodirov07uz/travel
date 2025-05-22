@@ -1,0 +1,939 @@
+:root {
+    --color-darkblue: #141732;
+    --color-lightblue: #5B62FF;
+    --color-lightblue2: #dbdcff;
+    --color-purple: #444766;
+    --color-white: #FFFFFF;
+    --color-lightgray: #C8D7FF;
+    --color-lightergray: #DFE0EC;
+    --color-lightestgray: #F7F7FC;
+    --color-lightbluehover: #323ae6;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--color-lightestgray);
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    width: 100%;
+    background-color: var(--color-white);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.header-buttons button {
+    width: 240px;
+    height: 46px;
+    border-radius: 8px !important;
+    border: none;
+    background-color: var(--color-darkblue);
+    color: var(--color-white);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+header h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-left: 50px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.site-title {
+    text-decoration: none;
+}
+
+.brand-name {
+    font-size: 2em;
+    display: inline-block;
+}
+
+.brand-name::first-letter {
+    color: var(--color-lightblue);
+}
+
+.brand-name span {
+    color: var(--color-darkblue);
+}
+
+.login {
+    margin-right: 50px;
+}
+
+.add-trip {
+    background-color: transparent !important;
+    color: var(--color-purple) !important;
+}
+
+.navbar-toggle {
+    display: none;
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.header-buttons.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    header h1 {
+        font-size: 24px;
+        margin-left: 0;
+    }
+
+    .header-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+        display: none;
+    }
+
+    .navbar-toggle {
+        display: block;
+    }
+
+    .header-buttons.active {
+        display: flex;
+    }
+}
+
+main {
+    max-width: 1720px;
+    margin: 20px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+    gap: 20px;
+}
+
+.section {
+    background-color: var(--color-white);
+    padding: 0 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sort-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--color-purple);
+}
+
+.trip-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-lightgray);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.trip-poputrchik {
+    background-color: var(--color-lightblue2) !important;
+}
+
+.trip-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.trip-time,
+.trip-locations {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #444766;
+}
+
+.trip-time .time,
+.trip-locations .location {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.trip-time {
+    max-width: 320px;
+    text-align: right;
+}
+
+.trip-locations {
+    max-width: 350px;
+}
+
+.trip-time .svg-container {
+    display: flex;
+    align-items: center;
+}
+
+.trip-time svg {
+    margin: 0 5px;
+}
+
+.trip-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-darkblue);
+    text-align: right;
+}
+
+.trip-your {
+    background-color: var(--color-lightergray);
+}
+
+.trip-your-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color-darkblue);
+    text-align: right;
+}
+
+.trip-header div {
+    margin: 5px 0;
+}
+
+.trip-locations .location:last-child {
+    text-align: right;
+}
+
+.trip-details {
+    justify-content: space-between;
+    align-items: center;
+    color: #444766;
+}
+
+.delete-button {
+    background-color: transparent;
+    color: var(--color-purple);
+    font-weight: bold;
+}
+
+.delete-button:hover {
+    color: red;
+}
+
+.trip-date,
+.trip-link {
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: bold;
+
+}
+
+.footer-card-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.trip-link a {
+    text-decoration: none;
+    color: var(--color-lightblue);
+}
+
+.duration {
+    white-space: nowrap;
+}
+
+.profile {
+    background-color: var(--color-white);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.profile-header {
+    margin-bottom: 20px;
+}
+
+.profile-header h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.profile-icon {
+    font-size: 100px;
+    color: var(--color-lightblue);
+}
+
+.profile-info {
+    margin-bottom: 20px;
+}
+
+.profile-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    margin: 0 30px;
+}
+
+.profile-label {
+    font-size: 24px;
+    margin-top: 20px;
+    font-weight: bold;
+    color: var(--color-purple);
+}
+
+.profile-btn {
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.profile-btn-container {
+    display: flex;
+}
+
+.profile-edit {
+    font-size: 18px;
+    color: var(--color-lightblue);
+    cursor: pointer;
+    margin-left: 100px;
+}
+
+.profile-edit:hover {
+    color: var(--color-purple)
+}
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.profile-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-logout {
+    background-color: fff !important;
+    color: var(--color-darkblue) !important;
+}
+
+.profile-logout .logout-icon {
+    fill: #141732; /* Исходный цвет */
+    width: 24px;
+    height: 24px;
+}
+
+.profile-logout:hover .logout-icon {
+    fill: var(--color-lightblue); /* Цвет при наведении */
+}
+
+.profile-save {
+    background-color: var(--color-lightblue);
+    color: var(--color-white);
+}
+
+.profile-save:hover {
+    background-color: var(--color-lightbluehover);
+}
+
+.profile-password {
+    background-color: transparent;
+    color: var(--color-lightblue) !important;
+}
+
+.profile-password:hover {
+    color: var(--color-purple) !important;
+    background-color: transparent;
+}
+
+.profile-logout {
+    background-color: var(--color-darkblue);
+    color: var(--color-white);
+}
+
+.profile-logout-form {
+    margin: 0;
+}
+
+.profile-password,
+.profile-save,
+.profile-logout {
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.profile-save,
+.profile-logout {
+    margin: 10px;
+}
+
+.profile-password {
+    background-color: transparent;
+    color: var(--color-purple);
+}
+
+.profile-save {
+    background-color: var(--color-lightblue);
+    color: var(--color-white);
+}
+
+.profile-logout {
+    background-color: var(--color-darkblue);
+    color: var(--color-white);
+}
+
+.notifications {
+    min-height: 150px !important;
+}
+
+.notifications h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1B1E2A;
+    text-align: center;
+}
+
+.notification {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #E3F2FD;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.notification-text {
+    font-size: 16px;
+    color: #141732 !important;
+}
+
+.notification-info {
+    text-align: right;
+}
+
+.notification-date {
+    font-size: 16px;
+    color: #141732 !important;
+    margin-bottom: 15px;
+}
+
+.notification-link a {
+    text-decoration: none;
+    color: var(--color-lightblue);
+    font-weight: bold;
+}
+
+
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 420px) {
+    .svg-large {
+        display: none;
+    }
+
+    .svg-small {
+        display: block;
+    }
+}
+
+@media (min-width: 421px) {
+    .svg-large {
+        display: block;
+    }
+
+    .svg-small {
+        display: none;
+    }
+}
+
+button {
+    background-color: var(--color-darkblue);
+    color: var(--color-white);
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:focus {
+    outline: none;
+}
+.profile-input {
+    flex: 2;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.profile-input:focus {
+    outline: none;
+}
+
+.profile-icon {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: auto;
+
+}
+
+#avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-save {
+    margin-top: 20px;
+}
+/* Стиль для модального окна */
+.modal {
+    display: none; /* Скрыть модальное окно по умолчанию */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.trips-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 20px !important;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.modal-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-button-confirm {
+    background-color: #f44336;
+    color: white;
+}
+
+.modal-button-cancel {
+    background-color: #ccc;
+    color: black;
+}
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px !important;
+}
+
+.step-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-links a, .step-links .current {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+}
+
+.step-links a:hover {
+    background-color: var(--color-lightbluehover) !important;
+}
+.profile-logout-form {
+    margin: 0;
+}
+
+.profile-btn {
+    max-width: 200px;
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px auto;
+}
+
+.profile-logout {
+    background-color: var(--color-darkblue);
+    color: var(--color-white);
+}
+
+.openModalBtn {
+    color: var(--color-lightblue);
+}
+
+.openModalBtn:hover {
+    color: var(--color-lightbluehover);
+}
+
+ /* Модалка */
+body.modal-open {
+    overflow: hidden;
+}
+
+.custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: auto;
+    background-color: white;
+    border: 1px solid #888;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    max-width: 700px; /* Указать максимальную ширину */
+    max-height: 80vh; /* Ограничить максимальную высоту по высоте окна */
+    overflow-y: auto; /* Добавить прокрутку, если содержимое больше высоты */
+    border-radius: 20px; /* Закругленные края */
+}
+
+.custom-modal-content {
+    padding: 20px;
+    background-color: #fefefe;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+.custom-close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.custom-close-btn:hover,
+.custom-close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.custom-driver-info {
+    text-align: center;
+}
+
+.custom-driver-photo {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+}
+
+.custom-driver-details {
+    margin-top: 10px;
+}
+
+.custom-driver-details h2 {
+    margin: 0;
+    color: var(--color-darkblue);
+}
+
+.custom-driver-details p {
+    color: var(--color-purple);
+    max-width: 250px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.custom-rating {
+    color: var(--color-lightblue);
+}
+
+.custom-trip-details {
+    margin-top: 20px;
+}
+
+.custom-trip-details h3 {
+    color: var(--color-darkblue);
+    text-align: center;
+    font-size: 32px;
+}
+
+.custom-trip-details h3::first-letter {
+    color: var(--color-lightblue);
+}
+
+.custom-trip-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.custom-trip-info div {
+    width: 45%;
+}
+
+.custom-trip-info p {
+    margin: 5px 0;
+}
+
+.custom-from strong,
+.custom-to strong {
+    color: var(--color-darkblue);
+}
+
+.custom-from p {
+    color: var(--color-purple);
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.custom-to p {
+    text-align: end !important;
+    color: var(--color-purple);
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.custom-driver-info h3 {
+    color: var(--color-darkblue);
+    font-size: 32px;
+}
+
+.custom-driver-info h3::first-letter {
+    color: var(--color-lightblue);
+}
+
+/* Дополнительные стили */
+#passengers-info {
+    margin-top: 20px;
+}
+
+#passengers-list {
+    list-style: none;
+    padding: 0;
+}
+
+#passengers-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.modal-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 5px 0 0;
+}
+
+.modal-button-start {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.modal-button-end {
+    background-color: #f44336;
+    color: white;
+}
+
+.modal-button-close {
+    background-color: #aaa;
+    color: white;
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.step-links {
+    display: inline-block;
+    color: white !important;
+}
+
+
+.step-links img{
+    height: 20px !important;
+    width: 20px !important;
+}
+
+.step-links a,
+.step-links .disabled {
+    display: inline-block;
+    padding: 8px;
+    text-decoration: none;
+    color: white;
+    border: 1px solid #007bff;
+    border-radius: 10px;
+    margin: 0 5px;    cursor: pointer;
+    background-color: var(--color-lightblue);
+    height: 20px !important;
+    width: 20px !important;
+}
+
+.step-links a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.step-links .disabled {
+    color: #ccc;
+    border-color: #ccc;
+    cursor: not-allowed;
+    height: 20px !important;
+    width: 20px !important;
+}
+
+.current {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.page-input-form {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.page-input-form input[type="number"] {
+    width: 60px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid var(--color-lightblue);
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 5px
+}
+
+@media screen and (max-width: 480px) {
+    .page-input-form input[type="number"] {
+        width: 40px;
+    }
+}
+
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.page-input-form button:hover {
+    background-color: #0056b3;
+}
+
+@media screen and (max-width: 480px) {
+    .page-input-form input[type="number"] {
+        width: 40px;
+    }
+}
+
+.form-control {
+    width: 100%;
+    height: 50px;
+    margin: 5px 0;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #66afe9;
+    outline: none;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.card-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 570px) {
+    .card-div, .trip-details {
+        display: block;
+    }
+}

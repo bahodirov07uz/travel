@@ -1,0 +1,260 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block css %}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'main/home.css' %}" />
+  <link rel="stylesheet" href="{% static "css/footer.css" %}">
+{% endblock %}
+{% block title %}Сервис совместных поездок{% endblock %}
+{% block content %}
+  <main>
+    <div class="container">
+      <div class="form-section">
+        <h1>
+          Сервис совместных поездок <span>в ДНР</span>
+        </h1>
+        <h2>Найдите свою поездку</h2>
+        <form method="get" action="{% url 'main:catalog' %}">
+          <div class="form-group">
+            <label for="departure">Город отправления</label>
+            <div class="input-container">
+              <img src="{% static 'img/departure-icon.svg' %}"
+                   class="input-icon"
+                   alt="Departure Icon" />
+              <input type="text"
+                     id="departure"
+                     name="departure_city"
+                     list="departure-list"
+                     placeholder="Донецк" />
+            </div>
+            <datalist id="departure-list"></datalist>
+          </div>
+          <div class="form-group">
+            <label for="arrival">Город прибытия</label>
+            <div class="input-container">
+              <img src="{% static 'img/departure-icon.svg' %}"
+                   class="input-icon"
+                   alt="Arrival Icon" />
+              <input type="text"
+                     id="arrival"
+                     name="destination_city"
+                     list="arrival-list"
+                     placeholder="Макеевка" />
+            </div>
+            <datalist id="arrival-list"></datalist>
+          </div>
+          <div class="form-group">
+            <label for="date">Дата поездки</label>
+            <div class="input-container">
+              <img src="{% static 'img/date-icon.svg' %}"
+                   class="input-icon"
+                   alt="Date Icon" />
+              <input type="date" id="date" name="date" min="" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="people">Количество человек</label>
+            <div class="input-container">
+              <img src="{% static 'img/passengers-icon.svg' %}"
+                   class="input-icon"
+                   alt="People Icon" />
+              <input type="number"
+                     id="people"
+                     name="passengers"
+                     min="1"
+                     max="10"
+                     value="1" />
+            </div>
+          </div>
+          <div class="form-group-button">
+            <button type="submit">Найти поездку</button>
+          </div>
+        </form>
+      </div>
+      <div class="image-section">
+        <img src="{% static 'img/women-high-fiving-car.png' %}"
+             alt="Happy people in car" />
+      </div>
+    </div>
+    <div class="container info-container">
+      <div class="info-card" style="background-color: var(--color-lightergray)">
+        <div class="card-content">
+          <h3>Пассажирам</h3>
+          <p>
+            <strong>Гибкость маршрута:</strong>
+            <br />
+            Найдите водителя, который поедет в нужное вам место в удобное время.
+          </p>
+          <p>
+            <strong>Безопасность:</strong>
+            <br />
+            Путешествуйте с проверенными водителями и оставляйте отзывы о
+            поездках, чтобы повысить качество сервиса.
+          </p>
+        </div>
+        <div class="card-image">
+          <img src="{% static '/img/9510950 1.png' %}" alt="Пассажирам" />
+        </div>
+      </div>
+      <div class="info-card" style="background-color: var(--color-lightgray)">
+        <div class="card-content">
+          <h3>Водителям</h3>
+          <p>
+            <strong>Поделитесь маршрутом:</strong>
+            <br />
+            Выбирайте пассажиров, которые едут по вашему маршруту и получайте
+            дополнительную выгоду.
+          </p>
+          <p>
+            <strong>Вместе веселее:</strong>
+            <br />
+            Совместные поездки – это отличный способ скоротать время в дороге в
+            приятной компании.
+          </p>
+        </div>
+        <div class="card-image">
+          <img src="{% static '/img/10380505 1.png' %}" alt="Водителям" />
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="popular-routes">
+        <h2>Популярные маршруты</h2>
+        <div class="routes-container">
+          <a href="{% url 'main:catalog' %}?departure_city=Москва"
+             class="route-card">
+            <img src="{% static '/img/moscow.jpg' %}" alt="Москва" />
+            <div class="route-info">
+              <h3>Москва</h3>
+              <p>от 850₽ за поездку</p>
+            </div>
+          </a>
+          <a href="{% url 'main:catalog' %}?departure_city=Симферополь"
+             class="route-card">
+            <img src="{% static '/img/simferopol.jpg' %}" alt="Симферополь" />
+            <div class="route-info">
+              <h3>Симферополь</h3>
+              <p>от 750₽ за поездку</p>
+            </div>
+          </a>
+          <a href="{% url 'main:catalog' %}?departure_city=Санкт-Петербург"
+             class="route-card">
+            <img src="{% static '/img/saint-petersburg.jpg' %}" alt="Санкт-Петербург" />
+            <div class="route-info">
+              <h3>Санкт-Петербург</h3>
+              <p>от 900₽ за поездку</p>
+            </div>
+          </a>
+          <a href="{% url 'main:catalog' %}?departure_city=Бийск"
+             class="route-card">
+            <img src="{% static '/img/biysk.jpg' %}" alt="Бийск" />
+            <div class="route-info">
+              <h3>Бийск</h3>
+              <p>от 950₽ за поездку</p>
+            </div>
+          </a>
+          <a href="{% url 'main:catalog' %}?departure_city=Элиста"
+             class="route-card">
+            <img src="{% static '/img/elist.jpg' %}" alt="Элиста" />
+            <div class="route-info">
+              <h3>Элиста</h3>
+              <p>от 800₽ за поездку</p>
+            </div>
+          </a>
+          <a href="{% url 'main:catalog' %}?departure_city=Уфа" class="route-card">
+            <img src="{% static '/img/ufa.jpg' %}" alt="Уфа" />
+            <div class="route-info">
+              <h3>Уфа</h3>
+              <p>от 770₽ за поездку</p>
+            </div>
+          </a>
+          <a href="{% url 'main:catalog' %}?departure_city=Челябинск"
+             class="route-card">
+            <img src="{% static '/img/chelyabinsk.jpg' %}" alt="Челябинск" />
+            <div class="route-info">
+              <h3>Челябинск</h3>
+              <p>от 900₽ за поездку</p>
+            </div>
+          </a>
+          <a href="{% url 'main:catalog' %}?departure_city=Махачкала"
+             class="route-card">
+            <img src="{% static '/img/makhachkala.jpg' %}" alt="Махачкала" />
+            <div class="route-info">
+              <h3>Махачкала</h3>
+              <p>от 450₽ за поездку</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <section style="background-color: #ffffff;">
+      <div class="container">
+        <div class="faq-section">
+          <h2 class="faq-heading">ОТВЕТЫ НА ВОПРОСЫ ПОПУТЧИКОВ И ВОДИТЕЛЕЙ</h2>
+          <div class="faq-container">
+            <div class="faq-column">
+              <div class="faq-item">
+                <button class="faq-question">
+                  Как создать поездку? <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                  <p>
+                    Для создания поездки необходимо зарегистрироваться на сайте.
+                    После регистрации вам станет доступна форма создания поездки.
+                    Заполните все необходимые поля и нажмите кнопку создать поездку.
+                  </p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-question">
+                  Как найти попутчиков? <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                  <p>Описание, как найти попутчиков.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-question">
+                  Как связаться с водителем? <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                  <p>Описание, как связаться с водителем.</p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-column">
+              <div class="faq-item">
+                <button class="faq-question">
+                  Как изменить детали поездки? <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                  <p>Описание, как изменить детали поездки.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-question">
+                  Как найти поездку для пассажира? <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                  <p>Описание, как найти поездку для пассажира.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-question">
+                  Как оценить водителя? <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                  <p>Описание, как оценить водителя.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  {% include "includes/footer.html" %}
+{% endblock content %}
+{% block script %}
+  <script src="{% static 'js/home.js' %}"></script>
+{% endblock script %}

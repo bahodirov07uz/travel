@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for trip in trips %}
+    <div class="trip">
+        <h3>{{ trip.departure_city.name }} - {{ trip.destination_city.name }}</h3>
+        <p>Дата: {{ trip.departure_date }}</p>
+        <p>Цена: {{ trip.price }} ₽</p>
+        <p>Максимальное количество пассажиров: {{ trip.max_passengers }}</p>
+    </div>
+{% endfor %}
+</body>
+</html>
